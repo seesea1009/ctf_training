@@ -30,7 +30,7 @@ flag{security_through_obscurity}
 
 #### 思路
 
-附件为gif图片，解开图片序列后，有一张缺了定位块的二维码，补全后刷码得flag
+附件为gif图片，解开图片序列后，有一张缺了定位块的二维码，补全后扫码得flag
 
 ![](./misc.assest/give_you_flag-001.png)
 
@@ -90,7 +90,7 @@ flag{DajiDali_JinwanChiji}
 
 #### 思路
 
-附件zip解压后，得到图片序列。白为0，黑为1, 转成二进制，得flag
+附件zip解压后，得到图片序列。白为0，黑为1, 转成二进制，得flag
 
 ![](./misc.assest/gif-001.png)
 
