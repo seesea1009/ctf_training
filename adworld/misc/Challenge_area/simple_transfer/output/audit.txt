@@ -1,0 +1,23 @@
+Foremost version 1.5.7 by Jesse Kornblum, Kris Kendall, and Nick Mikus
+Audit File
+
+Foremost started at Wed Nov  4 20:24:09 2020
+Invocation: foremost f9809647382a42e5bfb64d7d447b4099.pcap 
+Output directory: /Users/seesea/ctf/adworld/misc/simple_transfer/output
+Configuration file: /usr/local/etc/foremost.conf
+------------------------------------------------------------------
+File: f9809647382a42e5bfb64d7d447b4099.pcap
+Start: Wed Nov  4 20:24:09 2020
+Length: Unknown
+ 
+Num	 Name (bs=512)	       Size	 File Offset	 Comment 
+
+0:	00000662.pdf 	       5 MB 	     339380 	 
+Finish: Wed Nov  4 20:24:09 2020
+
+1 FILES EXTRACTED
+	
+pdf:= 1
+------------------------------------------------------------------
+
+Foremost finished at Wed Nov  4 20:24:09 2020

@@ -1,0 +1,25 @@
+Foremost version 1.5.7 by Jesse Kornblum, Kris Kendall, and Nick Mikus
+Audit File
+
+Foremost started at Thu Nov  5 10:25:52 2020
+Invocation: foremost e02c9de40be145dba6baa80ef1d270ba.png 
+Output directory: /Users/seesea/ctf/adworld/misc/Ditf/output
+Configuration file: /usr/local/etc/foremost.conf
+------------------------------------------------------------------
+File: e02c9de40be145dba6baa80ef1d270ba.png
+Start: Thu Nov  5 10:25:52 2020
+Length: Unknown
+ 
+Num	 Name (bs=512)	       Size	 File Offset	 Comment 
+
+0:	00001933.rar 	       4 MB 	     989714 	 Password Protected:
+1:	00000000.png 	     966 KB 	          0 	  (926 x 1100)
+Finish: Thu Nov  5 10:25:52 2020
+
+2 FILES EXTRACTED
+	
+rar:= 1
+png:= 1
+------------------------------------------------------------------
+
+Foremost finished at Thu Nov  5 10:25:52 2020
