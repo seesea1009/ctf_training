@@ -1132,3 +1132,75 @@ foremost分离文件后，得到一个rar文件。
 
 base64解码后，得16进制文本文件，文件开头内容`e95602000`类似指令，于是将文件转为二进制。拖到ida中分析，疑似bios文件。
 
+### picture2
+
+#### 思路
+
+binwalk查看，在文件尾发现zip内容：
+
+```text
+$ binwalk e4103617b4a6476fb7aa8f862f2ee400.png.jpeg
+
+DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+0             0x0             JPEG image data, JFIF standard 1.01
+38884         0x97E4          Zlib compressed data, default compression
+```
+
+拆开后，得到一段base64编码的内容：
+
+```text
+S1ADBBQAAQAAADkwl0xs4x98WgAAAE4AAAAEAAAAY29kZePegfAPrkdnhMG2gb86/AHHpS0GMqCrR9s21bP43SqmesL+oQGo50ljz4zIctqxIsTHV25+1mTE7vFc9gl5IUif7f1/rHIpHql7nqKPb+2M6nRLuwhU8mb/w1BLAQI/ABQAAQAAADkwl0xs4x98WgAAAE4AAAAEACQAAAAAAAAAIAAAAAAAAABjb2RlCgAgAAAAAAABABgAAFvDg4Xa0wE8gAmth9rTATyACa2H2tMBUEsFBgAAAAABAAEAVgAAAHwAAADcAFtQeXRob24gMi43XQ0KPj4+IKh9qH2ofQ0KDQpUcmFjZWJhY2sgKG1vc3QgcmVjZW50IGNhbGwgbGFzdCk6DQogIEZpbGUgIjxweXNoZWxsIzA+IiwgbGluZSAxLCBpbiA8bW9kdWxlPg0KICAgIKh9qH2ofQ0KWmVyb0RpdmlzaW9uRXJyb3I6IKh9qH2ofah9qH2ofah9qH2ofah9qH2ofah9qH2ofah9qH2ofah9qH2ofah9qH2ofah9qH2ofah9qH2ofSA8LSBwYXNzd29yZCA7KQ0KPj4+IAA=
+```
+
+解码后得到一个二进制文件，文件头为`4B 50 03 04`，是不是很眼熟，把`4B`和`50`换一下，就是`PK`开头，是`zip`文件。
+
+```text
+00000000: 4b50 0304 1400 0100 0000 3930 974c 6ce3  KP........90.Ll.
+00000010: 1f7c 5a00 0000 4e00 0000 0400 0000 636f  .|Z...N.......co
+```
+
+修复后尝试解压，发现需要输入密码，不过，从下面的红框中的描述，我们好像发现了什么，打开python测试一下。
+
+![](./misc.assest/picture2-001.png)
+
+从前面图上的描述看，`integer division or modulo by zero`应该就是密码了。
+
+```bash
+$ python2
+>>> 1/0
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ZeroDivisionError: integer division or modulo by zero
+>>>
+```
+
+> 这里有一个要注意的地方，python2和python3的除零的错误信息是不一样的。所以我们要听话，图上写了python2就不要用python3了。
+
+解压后，得到一个code文件，内容如下，从格式上看，这是一个Uuencode编码格式：
+
+```text
+begin 644 key.txt
+G0TE30TY[,C,X.$%&,C@Y,T5".#5%0C%"-#,Y04)&1C8Q-S,Q.49]
+`
+end
+```
+
+Uuencode编码格式：
+
+```text
+begin <輸入檔存取模式> <輸入檔名>
+<編碼內容>
+[<編碼內容>]
+[...]
+`
+end
+```
+
+解码后得到flag。
+
+#### flag
+
+```text
+CISCN{2388AF2893EB85EB1B439ABFF617319F}
+```
