@@ -1204,3 +1204,39 @@ end
 ```text
 CISCN{2388AF2893EB85EB1B439ABFF617319F}
 ```
+
+### 双色块
+
+#### 思路
+
+查看gif图片，发现每一帧都有一个10\*10像素的小方块，组成一个24\*24的方块。
+先把gif的小方块拼成一张图再分析，结果如下：
+
+![](./misc.assest/double_color_block-composite.png)
+
+从上图能看到，这并不是一个二维码。
+继续分析，发现，图中有三个坚线，而且之间的宽度刚好是8。
+这可能是二进制的ascii码（第一位都为0）。
+
+尝试按01解码得到下面的`base64`字符串，尝试base64解码，发现不对。
+
+```text
+o8DlxK+H8wsiXe/ERFpAMaBPiIcj1sHyGOMmQDkK+uXsVZgre5DSXw==hhhhhhhhhhhhhhhh
+```
+
+那么再看一下之前的gif文件吧，看看还有什么情报，使用`foremore`拆包。
+果然，还有一个信息在gif文件中：
+
+![](./misc.assest/double_color_block-key.png)
+
+结合上面的base64和key，这应该是一个DES加密，找到下面的在线解密网站解密得flag
+
+#### flag
+
+```text
+flag{2ce3b416457d4380dc9a6149858f71db}
+```
+
+#### 参考链接
+
+[http://tool.chacuo.net/cryptdes](http://tool.chacuo.net/cryptdes)
