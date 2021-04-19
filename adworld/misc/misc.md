@@ -1313,3 +1313,57 @@ print(''.join([chr(int(bin_str[i:i+8],2)) for i in range(0,len(bin_str),8)]))
 ```text
 flag{Ba5e_64OFive}
 ```
+
+### picture
+
+#### 思路
+
+binwalk可以分解出一个base64编码的文件。
+
+将文件解码后，得到一个二进制文件。文件头`magic`为`KP`，怀疑是zip文件头`PK`。
+
+```text
+00000000: 4b50 0304 1400 0100 0000 3930 974c 6ce3  KP........90.Ll.
+00000010: 1f7c 5a00 0000 4e00 0000 0400 0000 636f  .|Z...N.......co
+00000020: 6465 e3de 81f0 0fae 4767 84c1 b681 bf3a  de......Gg.....:
+00000030: fc01 c7a5 2d06 32a0 ab47 db36 d5b3 f8dd  ....-.2..G.6....
+```
+
+修改后尝试解压，发现是一个加密的zip包，密码提示如下：
+
+```python
+[Python 2.7]
+>>> �}�}�}
+
+Traceback (most recent call last):
+  File "<pyshell#0>", line 1, in <module>
+    �}�}�}
+ZeroDivisionError: �}�}�}�}�}�}�}�}�}�}�}�}�}�}�}�}�}�}�}�}�}�}�}�}�}�}�}�}�}�} <- password ;)
+>>>
+```
+
+这是一个python的除0错误信息，运行python得到密码`integer division or modulo by zero`
+
+> PS: 这里需要注意python的版本，2和3的提示信息是不一样的，题目中用的是2的提示信息。
+
+```text
+# python2
+ZeroDivisionError: integer division or modulo by zero
+# python3
+ZeroDivisionError: division by zero
+```
+
+解压后得到了一个code文件，搜索后得知，这是一个`UUencode`的编码。在线解码后，得到flag.
+
+```text
+begin 644 key.txt
+G0TE30TY[,C,X.$%&,C@Y,T5".#5%0C%"-#,Y04)&1C8Q-S,Q.49]
+`
+end
+```
+
+#### flag
+
+```text
+CISCN{2388AF2893EB85EB1B439ABFF617319F}
+```
