@@ -1240,3 +1240,76 @@ flag{2ce3b416457d4380dc9a6149858f71db}
 #### 参考链接
 
 [http://tool.chacuo.net/cryptdes](http://tool.chacuo.net/cryptdes)
+
+### picture3
+
+#### 思路
+
+binwalk拆包，得到现在两个文件。
+
+```text
+-rw-r--r--  1 seesea  staff  312  4 19 15:23 149EC.zip
+-rw-r--r--  1 seesea  staff  238  5 11  2018 stego.txt
+```
+
+其中`stego.txt`内容如下，像是一堆base64编码：
+
+```text
+b2Q5dU==
+aDk5Ni==
+ZG8wOW==
+ZzYxYh==
+ZjU4NT==
+aXBjNF==
+Q3dTM2==
+d1Y5c1==
+dFA3WV==
+ZDNQUP==
+ejhBMT==
+dUowaW==
+OVQ2ZD==
+aUM5ZU==
+NnFFek==
+ZGc0T/==
+NGpWNE==
+NVZpUW==
+ejZDTm==
+a1VEN5==
+azNMUX==
+TXlhNW==
+bjZwWm==
+Q2Q0b1==
+```
+
+怀疑base64隐写，尝试解码后，得flag。
+
+#### exp
+
+```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+import base64
+
+base64str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+bin_str = ''
+with open("stego.txt", "r") as fin:
+    lines = fin.readlines()
+for line in lines:
+    line = line.strip()
+    pad_len = line.count("=")
+    line = line.replace("=", "")
+    if pad_len > 0:
+        b64idx = base64str.index(line[-1])
+        bin_str += '{0:06b}'.format(b64idx)[-pad_len*2:]
+
+#bin2int = lambda x:[int(bin_str[i:i+8],2) for i in range(0, len(bin_str), 8)]
+
+print(''.join([chr(int(bin_str[i:i+8],2)) for i in range(0,len(bin_str),8)]))
+```
+
+#### flag
+
+```text
+flag{Ba5e_64OFive}
+```
