@@ -1367,3 +1367,104 @@ end
 ```text
 CISCN{2388AF2893EB85EB1B439ABFF617319F}
 ```
+
+### ewm
+
+#### 思路
+
+解压后，得到一堆看上去像是二维码的图片碎片。有的是small后缀，有的是big后缀。
+
+用创建时间排序后发现，small后缀49张(7x7)，big后缀36张(6x6)。
+
+```bash
+ls -l -t
+```
+
+再观察一下，碎片应该是从原图右下角开始，像左上角开始排列的。
+
+用脚本处理后，得到两张一样二维码，扫码得flag
+
+small.png
+
+![small.png](./misc.assest/ewm-small.png)
+
+big.png
+
+![big.png](./misc.assest/ewm-big.png)
+
+#### poc
+
+```python
+#!/usr/bin/env python3
+#-*- coding: utf8 -*-
+
+from PIL import Image
+import os
+
+small_list_pipe = os.popen("ls -t | grep _small")
+small_list = small_list_pipe.read().split()
+small_tmp = Image.open(small_list[0])
+
+w, h = small_tmp.size
+small_img = Image.new("RGB", (w * 7, h * 7))
+small_tmp.close()
+
+for i in range(7):
+    for j in range(7):
+        small_tmp = Image.open(small_list[i * 7 + j])
+        small_img.paste(small_tmp, (w * (6 - j), h * (6 - i)))
+        small_tmp.close()
+small_img.show()
+small_img.save("small.png")
+
+big_list_pipe = os.popen("ls -t | grep _big")
+big_list = big_list_pipe.read().split()
+big_tmp = Image.open(big_list[0])
+
+w, h = big_tmp.size
+big_img = Image.new("RGB", (w * 6, h * 6))
+big_tmp.close()
+
+for i in range(6):
+    for j in range(6):
+        big_tmp = Image.open(big_list[i * 6 + j])
+        big_img.paste(big_tmp, (w * (6 - j), h * (6 - i)))
+        big_tmp.close()
+big_img.show()
+big_img.save("big.png")
+```
+
+#### flag
+
+```text
+flag{g00d_g00d_study_1jf8988}
+```
+
+#### 参考链接
+
+### xxx
+
+#### 思路
+
+#### flag
+
+```text
+
+```
+
+#### 参考链接
+
+
+
+### xxx
+
+#### 思路
+
+#### flag
+
+```text
+
+```
+
+#### 参考链接
+
